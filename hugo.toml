@@ -1,8 +1,7 @@
 baseURL = "https://bor.re/"
-languageCode = "es-mx"
+languageCode = "en-us"
 title = "bor.re"
 theme = "papermod"
-defaultContentLanguage = "es"
 enableRobotsTXT = true
 enableEmoji = true
 enableGitInfo = true
@@ -55,7 +54,7 @@ summaryLength = 25
 
   [params.homeInfoParams]
     Title = "Eduardo Hernández"
-    Content = "Engineering manager en Huawei Cloud LATAM. Interesado en infraestructura, distributed systems, y cómo aplicar ingeniería de verdad (no buzzwords) a problemas de negocio."
+    Content = "Engineering manager at Huawei Cloud LATAM. Writing about infrastructure, distributed systems, and what it takes to ship production-grade software at scale."
 
   [params.fuseOpts]
     isCaseSensitive = false
@@ -66,29 +65,13 @@ summaryLength = 25
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
-[languages]
-  [languages.es]
-    disabled = false
-    languageCode = "es-mx"
-    languageDirection = ""
-    languageName = "Español"
-    title = "bor.re"
-    weight = 1
-    [languages.es.params]
-      description = "Blog técnico de Eduardo Hernández"
-
-    [[languages.es.menu.main]]
-      identifier = "posts"
-      name = "Posts"
-      url = "/posts/"
-      weight = 1
-    [[languages.es.menu.main]]
-      identifier = "about"
-      name = "Acerca"
-      url = "/about/"
-      weight = 2
-    [[languages.es.menu.main]]
-      identifier = "drafts"
-      name = "Borradores"
-      url = "/drafts/"
-      weight = 3
+[[menu.main]]
+  identifier = "posts"
+  name = "Posts"
+  url = "/posts/"
+  weight = 1
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 2
