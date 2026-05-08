@@ -1,0 +1,63 @@
+{{- $base := strings.TrimSuffix .Site.BaseURL "/" -}}
+{{- $image := printf "%s/%s" $base "images/hero-placeholder.jpg" -}}
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Eduardo Hernández Cansino",
+  "url": "{{ $base }}/",
+  "image": "{{ $image }}",
+  "jobTitle": "CTO, Huawei Cloud LATAM",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Huawei Cloud LATAM",
+    "url": "https://www.huaweicloud.com/"
+  },
+  "description": "CTO latinoamericano, arquitecto de nube y defensor de la IA nativa que se describe como un food-driven engineer.",
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Tecnológico de Monterrey"
+  },
+  "sameAs": [
+    "https://mx.linkedin.com/in/ehernandezc",
+    "https://github.com/borre",
+    "https://twitter.com/borre",
+    "https://www.instagram.com/borreg/"
+  ]
+}
+</script>
+{{- end -}}
+
+{{- if and .IsPage (eq .Type "blog") -}}
+{{- $tags := .Params.tags | default (slice) -}}
+{{- $keywords := delimit $tags ", " -}}
+{{- $cover := cond (and .Params.cover (not (eq .Params.cover.image ""))) (absURL .Params.cover.image) (printf "%s/%s" $base "images/social-card.png") -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ printf "%q" .Title }},
+  "description": {{ printf "%q" (.Params.description | default .Summary) }},
+  "image": "{{ $cover }}",
+  "inLanguage": "{{ .Lang }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  "url": "{{ .Permalink }}",
+  "keywords": "{{ $keywords }}",
+  "author": {
+    "@type": "Person",
+    "name": "Eduardo Hernández Cansino",
+    "url": "{{ $base }}/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "bor.re",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ printf "%s/%s" $base "images/favicon-512.png" }}"
+    }
+  }
+}
+</script>
+{{- end -}}

@@ -1,0 +1,54 @@
+.language-tabs {
+  margin-top: 1.5rem;
+  display: block;
+}
+.language-tabs input[type="radio"] {
+  display: none;
+}
+.language-tabs label {
+  display: inline-block;
+  margin-right: 0.25rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--primary, currentColor);
+  border-bottom: none;
+  border-radius: 0.6rem 0.6rem 0 0;
+  background-color: var(--code-bg, rgba(0, 0, 0, 0.05));
+  cursor: pointer;
+  font-weight: 600;
+}
+.language-tabs label:last-of-type {
+  margin-right: 0;
+}
+.language-tabs .language-pane {
+  border: 1px solid var(--primary, currentColor);
+  border-radius: 0 0.75rem 0.75rem 0.75rem;
+  padding: 1.25rem;
+  background-color: var(--entry, rgba(0, 0, 0, 0.02));
+  display: none;
+}
+.language-tabs .language-pane > p:first-of-type {
+  margin-top: 0;
+}
+#bio-es:checked + label,
+#bio-en:checked + label,
+#bio-es-en:checked + label,
+#bio-en-en:checked + label {
+  background-color: var(--theme, #fff);
+  color: var(--primary, currentColor);
+}
+#bio-es:checked ~ .language-pane.es,
+#bio-en:checked ~ .language-pane.en,
+#bio-es-en:checked ~ .language-pane.es,
+#bio-en-en:checked ~ .language-pane.en {
+  display: block;
+}
+
+.home-info .buttons a {
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 1.75rem;
+  margin: 0.35rem 0.35rem 0.35rem 0;
+}
+.home-info .buttons a.secondary {
+  border: 1px solid var(--primary, currentColor);
+}

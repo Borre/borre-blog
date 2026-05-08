@@ -1,0 +1,94 @@
+baseURL = "https://bor.re/"
+languageCode = "es-mx"
+title = "bor.re"
+theme = "papermod"
+defaultContentLanguage = "es"
+enableRobotsTXT = true
+enableEmoji = true
+enableGitInfo = true
+summaryLength = 25
+
+[pagination]
+  pagerSize = 10
+
+[permalinks]
+  posts = "/:slug/"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[params]
+  env = "production"
+  mainSections = ["posts"]
+  defaultTheme = "auto"
+  disableThemeToggle = false
+  ShowReadingTime = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowPostNavLinks = true
+  tocopen = true
+  comments = false
+  DateFormat = "2 Jan 2006"
+
+  [params.label]
+    text = "bor.re"
+    icon = "/images/favicon.png"
+    iconHeight = 32
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/borre"
+  [[params.socialIcons]]
+    name = "linkedin"
+    url = "https://linkedin.com/in/ehernandezc"
+
+  [params.homeInfoParams]
+    Title = "Eduardo Hernández"
+    Content = "Engineering manager en Huawei Cloud LATAM. Interesado en infraestructura, distributed systems, y cómo aplicar ingeniería de verdad (no buzzwords) a problemas de negocio."
+
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1_200
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ["title", "permalink", "summary", "content"]
+
+[languages]
+  [languages.es]
+    disabled = false
+    languageCode = "es-mx"
+    languageDirection = ""
+    languageName = "Español"
+    title = "bor.re"
+    weight = 1
+    [languages.es.params]
+      description = "Blog técnico de Eduardo Hernández"
+
+    [[languages.es.menu.main]]
+      identifier = "posts"
+      name = "Posts"
+      url = "/posts/"
+      weight = 1
+    [[languages.es.menu.main]]
+      identifier = "about"
+      name = "Acerca"
+      url = "/about/"
+      weight = 2
+    [[languages.es.menu.main]]
+      identifier = "drafts"
+      name = "Borradores"
+      url = "/drafts/"
+      weight = 3

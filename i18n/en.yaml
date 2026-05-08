@@ -1,0 +1,26 @@
+- id: home
+  translation: "Home"
+- id: posts
+  translation: "Posts"
+- id: readMore
+  translation: "Read more"
+- id: wordCount
+  translation: "{{ .WordCount }} words"
+- id: readingTime
+  translation: "{{ .Count }} min read"
+- id: lastUpdated
+  translation: "Updated"
+- id: share
+  translation: "Share"
+- id: toc
+  translation: "Table of contents"
+- id: translations
+  translation: "Languages"
+- id: related
+  translation: "Related content"
+- id: search
+  translation: "Search"
+- id: prevPost
+  translation: "Previous"
+- id: nextPost
+  translation: "Next"
