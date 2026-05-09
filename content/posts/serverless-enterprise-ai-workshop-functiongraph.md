@@ -148,7 +148,14 @@ If IAM conditional, KMS, and CTS hadn't been mandatory (CNBV), we might have cut
 
 ## Try It Yourself
 
-The Terraform modules, synthetic data generators, and Dify configurations are open-source on GitHub (anonymized — request access via the author's profile).
+The Terraform modules, synthetic data generators, and Dify configurations are open-source:
+
+```
+git clone https://github.com/Borre/ayco-huawei-cloud.git
+cd ayco-huawei-cloud
+cp .env.example .env  # Fill in your credentials
+make demo
+```
 
 **Requirements:** Huawei Cloud account in `la-north-2`, a MaaS API key, and 15 minutes for `make demo`.
 
