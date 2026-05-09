@@ -1,6 +1,6 @@
 ---
 title: "Building a Multi-Service Enterprise AI Workshop on Huawei Cloud: A Serverless FunctionGraph Architecture"
-description: "How we designed a serverless document analysis pipeline connecting OBS, DMS, FunctionGraph, OCR, DeepSeek, Dify, and DWS for a financial services client."
+description: "How we designed a serverless document analysis pipeline connecting OBS, DMS, FunctionGraph, OCR, DeepSeek, Dify, and DWS for a financial services client processing 45,000+ invoices per month."
 date: 2026-05-09
 draft: false
 tags: [huawei-cloud, serverless, functiongraph, enterprise-ai, fintech]
@@ -9,17 +9,17 @@ slug: serverless-enterprise-ai-workshop-functiongraph
 
 In April 2026, we prepared a Technology Innovation Workshop for a **financial services client in Latin America**. The brief: demonstrate how Huawei Cloud could modernize their document-heavy compliance workflows, risk scoring, and regulatory reporting.
 
-The architecture we designed goes well beyond what we ended up demoing in the room. This post covers the full design — the serverless contract analysis pipeline with **FunctionGraph**, **DMS/Kafka**, **OCR Service**, **DeepSeek**, and **Dify** — plus why we simplified it for a 45-minute workshop.
+The architecture we designed goes well beyond what we ended up demoing in the room. This post covers the full design — the serverless **invoice and contract analysis pipeline** with **FunctionGraph**, **DMS/Kafka**, **OCR Service**, **DeepSeek**, and **Dify** — plus why we simplified it for a 45-minute workshop.
 
 ---
 
 ## The Problem
 
-The compliance team reviews contracts, vendor profiles, and transaction anomalies across thousands of entities. The manual process took approximately:
+The compliance team reviews **invoices, vendor profiles, and transaction anomalies** across thousands of entities. The manual process involved:
 
-- **2 weeks** to analyze 2,300 vendors for financial risk
-- **Days** for a single contract review (OCR → manual extraction → legal review)
-- **No unified view**: contracts in PDF silos, vendor data in ERP, credit bureau data in separate systems
+- **45,000+ invoices per month** — each requiring OCR extraction, validation against ERP, and compliance scoring
+- **~3 days** for a single contract review (OCR → manual extraction → legal review)
+- **No unified view**: PDF silos across 3 business units, vendor data in ERP, credit bureau data in separate systems
 
 ## The Full Architecture
 
@@ -74,7 +74,7 @@ The pipeline has **3 distinct processing phases**: OCR → Parse → LLM. Each p
 **FunctionGraph** is the natural choice because:
 
 1. **Event-driven triggers** — An OBS PUT event fires the function. No polling, no EC2 sitting idle.
-2. **Auto-scaling to zero** — Between document uploads, there are zero running instances. For this batch processing pattern (upload 50 contracts once a week), this matters.
+2. **Auto-scaling to zero** — Between batch uploads, there are zero running instances. At 45,000 invoices per month (~1,500/day), the pipeline scales up during business hours, processes the batch, and releases resources.
 3. **DMS integration** — The function writes results to DMS topics, which downstream consumers (Parse Function, DeepSeek, Dify) subscribe to independently. Each stage scales at its own rate.
 4. **Cold start is manageable** — A ~1-3s cold start per function instance is invisible against 15s of LLM inference per document. Python runtimes warm faster; custom runtimes may vary.
 
@@ -95,21 +95,23 @@ OBS PUT event
                     └─ Embedding → Knowledge Base
 ```
 
-### Why Kafka (DMS) for 50 Documents/Week?
+### Why DMS (Kafka) at 45,000 Invoices/Month
 
-At first glance, Kafka over DMS seems like overkill for 50 contracts per week — a simple synchronous chain or a lightweight task queue would work. The reasoning was forward-looking:
+At this scale, an async event bus isn't optional — it's structural. Here's why:
 
-1. **Pipeline stages have different scaling profiles** — OCR is CPU-bound and fast, LLM inference is I/O-bound and slow. Without a buffer, a slow LLM call blocks OCR processing for subsequent documents. DMS decouples them: OCR writes results and returns immediately; the Parse + LLM stages consume at their own pace.
+1. **Pipeline stages have different scaling profiles** — OCR is CPU-bound and processes ~1 page/second per instance. LLM inference is I/O-bound and takes 3-15s per document. Without a buffer, a slow LLM call blocks OCR for subsequent invoices. DMS decouples them: the OCR stage writes results and returns immediately; downstream consumers (Parse + LLM) process at their own rate.
 
-2. **Audit requirements favor async** — Each DMS message carries metadata (document ID, source system, compliance tier). If a regulator requests "show me every document that moved through the pipeline on May 15," the DMS topic replay provides exactly that. A synchronous chain would require reconstructing the sequence from function logs.
+2. **Burst absorption** — Invoices arrive in waves (end-of-month peaks, supplier onboarding batches). DMS queues up to 72 hours of backlog, so a 2x or 3x burst in document volume doesn't require over-provisioning compute.
 
-3. **The architecture was designed for growth** — The client's roadmap includes tripling document volume within 18 months. Investing in DMS early avoids a painful migration later.
+3. **Audit requirements favor async** — Each DMS message carries metadata (document ID, source system, compliance tier). Topic replay provides a verifiable sequence of every document processed on any given day — a synchronous chain would require reconstructing from overlapping function logs.
 
-That said, a simpler alternative exists: FunctionGraph can chain stages via synchronous invocation for <100 docs/week. We chose DMS because the client's compliance team valued the audit trail more than the simplified deployment.
+4. **Individual stage scaling** — With DMS, each consumer group (Parse, LLM, Dify embedder) scales independently. We can run 5 OCR instances and 10 LLM instances without coupling them.
 
-What isn't shown in the diagram: each FunctionGraph invocation wraps its stage in try-catch logic, writing failed documents to a **DMS dead-letter queue** (DLQ) for manual review. CTS captures the error context — function name, document ID, error type, and timestamp. The DLQ is monitored via a Cloud Eye alarm, so the operations team gets notified before the compliance team does.
+### Error Handling & Resilience
 
-For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 50 documents per week, manual DLQ review takes minutes — not hours.
+Each FunctionGraph invocation wraps its stage in try-catch logic. Failed documents land in a **DMS dead-letter queue** (DLQ) — not for manual review, but for an automated reprocessing function that retries with escalating backoff (1 min → 5 min → 30 min → escalate to Cloud Eye alarm). CTS captures the error context — function name, document ID, error type, and timestamp — so the ops team has a complete incident trail.
+
+For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 45,000 invoices/month, with a ~1% transient failure rate, that's ~450 automatic retries per month — all handled without human intervention.
 
 ---
 
@@ -148,8 +150,8 @@ The workshop audience (C-suite, not engineers) needed to *touch and feel* the ch
 
 ## Lessons Learned
 
-### 1. FunctionGraph + DMS shines in batch document processing
-For this use case (50-100 contracts per week, not 10,000 per hour), the serverless async pipeline is perfect. Each component scales independently, and the infrastructure cost between batches is effectively zero.
+### 1. FunctionGraph + DMS shines at invoice-processing scale
+For this use case (45,000 invoices per month ≈ 1,500/day), the serverless async pipeline is a strong fit. Each component scales independently, and the infrastructure cost between batch windows is effectively zero for Python runtimes on FunctionGraph's pay-per-use model.
 
 ### 2. Workshop demos ≠ production architecture
 The full FunctionGraph pipeline is what you'd deploy in production. The workshop demo is what fits in 8 minutes. Design both, but be honest about the gap.
