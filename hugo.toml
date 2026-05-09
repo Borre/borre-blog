@@ -36,12 +36,13 @@ summaryLength = 25
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
   ShowPostNavLinks = true
+  ShowShareButtons = true
   tocopen = true
   comments = false
   DateFormat = "2 Jan 2006"
 
   [params.label]
-    text = "bor.re"
+    text = "EH"
     icon = "/images/favicon.png"
     iconHeight = 32
 
@@ -51,10 +52,24 @@ summaryLength = 25
   [[params.socialIcons]]
     name = "linkedin"
     url = "https://linkedin.com/in/ehernandezc"
+  [[params.socialIcons]]
+    name = "x"
+    url = "https://x.com/ehdz"
 
   [params.homeInfoParams]
     Title = "Eduardo Hernández"
-    Content = "Engineering manager at Huawei Cloud LATAM. Writing about infrastructure, distributed systems, and what it takes to ship production-grade software at scale."
+    Content = """Engineering manager at **Huawei Cloud LATAM**. Writing about infrastructure, distributed systems, and what it takes to ship production-grade software at scale.
+
+15+ years across software engineering, DevOps, sales engineering, and cloud strategy for Latin America. Self-taught, business-oriented, and I believe architecture conversations are better over good food.
+
+Currently building cloud infrastructure, AI platforms, and the occasional side project that keeps the craft alive."""
+
+  [[params.homeInfoParams.social]]
+    name = "GitHub"
+    url = "https://github.com/borre"
+  [[params.homeInfoParams.social]]
+    name = "LinkedIn"
+    url = "https://linkedin.com/in/ehernandezc"
 
   [params.fuseOpts]
     isCaseSensitive = false
