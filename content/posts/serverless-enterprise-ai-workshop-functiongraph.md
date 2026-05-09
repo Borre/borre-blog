@@ -171,8 +171,8 @@ If IAM conditional, KMS, and CTS hadn't been mandatory (CNBV), we might have cut
 The Terraform modules, synthetic data generators, and Dify configurations are open-source:
 
 ```
-git clone https://github.com/Borre/ayco-huawei-cloud.git
-cd ayco-huawei-cloud
+git clone https://github.com/Borre/serverless-doc-ai-pipeline.git
+cd serverless-doc-ai-pipeline
 cp .env.example .env  # Fill in your credentials
 make demo
 ```
