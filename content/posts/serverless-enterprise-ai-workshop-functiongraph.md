@@ -18,7 +18,7 @@ The architecture we designed goes well beyond what we ended up demoing in the ro
 The compliance team reviews **invoices, vendor profiles, and transaction anomalies** across thousands of entities. The manual process involved:
 
 - **45,000+ invoices per month** — each requiring OCR extraction, validation against ERP, and compliance scoring
-- **~3 days** for a single contract review (OCR → manual extraction → legal review)
+- **~3 days** for a single vendor on-boarding (document review → OCR extraction → legal validation → ERP update)
 - **No unified view**: PDF silos across 3 business units, vendor data in ERP, credit bureau data in separate systems
 
 ## The Full Architecture
@@ -50,14 +50,14 @@ The original design connects **9 Huawei Cloud services** into an asynchronous do
 
 | Service | Role |
 |---------|------|
-| **OBS** (Object Storage) | Raw contract storage, extracted text, results |
+| **OBS** (Object Storage) | Raw invoice/contract storage, extracted text, results |
 | **FunctionGraph** | Serverless orchestrator — triggers on OBS upload events |
 | **OCR Service** | PDF/JPG → structured text extraction |
 | **DMS** (Kafka-compatible) | Async event bus between pipeline stages |
 | **FunctionGraph Parse Function** | Post-OCR normalization: tables, formatting, structure |
 | **DeepSeek** (via MaaS) | LLM: AI Summary, Metadata, Doc Classification, Risk Clauses |
 | **Dify Platform** | RAG knowledge base + AI Document Chatbot |
-| **DWS** (Data Warehouse Service) | Structured storage of contract risk results |
+| **DWS** (Data Warehouse Service) | Structured storage of invoice risk scores and analytics |
 | **CFW** (Cloud Firewall) | Perimeter security for regulated financial data |
 | **KMS** (Key Management) | Encryption at rest for sensitive documents |
 
@@ -105,13 +105,15 @@ At this scale, an async event bus isn't optional — it's structural. Here's why
 
 3. **Audit requirements favor async** — Each DMS message carries metadata (document ID, source system, compliance tier). Topic replay provides a verifiable sequence of every document processed on any given day — a synchronous chain would require reconstructing from overlapping function logs.
 
-4. **Individual stage scaling** — With DMS, each consumer group (Parse, LLM, Dify embedder) scales independently. We can run 5 OCR instances and 10 LLM instances without coupling them.
+4. **Individual stage scaling** — With DMS, each consumer group (Parse, LLM, Dify embedder) scales independently according to its own bottleneck. If LLM inference becomes the constraint (the likeliest scenario at this volume), we add more consumer instances to the `parsed.documents` topic without touching the OCR or embedding pipelines.
 
 ### Error Handling & Resilience
 
-Each FunctionGraph invocation wraps its stage in try-catch logic. Failed documents land in a **DMS dead-letter queue** (DLQ) — not for manual review, but for an automated reprocessing function that retries with escalating backoff (1 min → 5 min → 30 min → escalate to Cloud Eye alarm). CTS captures the error context — function name, document ID, error type, and timestamp — so the ops team has a complete incident trail.
+Each FunctionGraph invocation wraps its stage in try-catch logic. Failed documents land in a **DMS dead-letter queue** (DLQ) — not for manual review, but for a dedicated FunctionGraph **reprocessor** that retries with escalating backoff (1 min → 5 min → 30 min → escalate to Cloud Eye alarm). This makes three FunctionGraph instances in total: preprocess (OCR), parse (normalization), and reprocessor (DLQ handler). CTS captures the error context — function name, document ID, error type, and timestamp — so the ops team has a complete incident trail.
 
 For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 45,000 invoices/month, with a ~1% transient failure rate, that's ~450 automatic retries per month — all handled without human intervention.
+
+A separate concern: what about OCR passes with **low confidence** (<80%)? These are routed to a dedicated DMS topic (`ocr.low_confidence`) that feeds a lightweight manual review queue — displayed in a simple Streamlit dashboard for a compliance analyst to verify. At typical OCR quality levels for structured invoices (90-95% confidence on clean PDFs), this represents 2,000-4,500 documents per month requiring human review, a dramatically better ratio than the current all-manual process.
 
 ---
 
@@ -124,7 +126,7 @@ The client operates under **CNBV** (Mexico's financial regulator), **Banxico** (
 | Encryption at rest | OBS + KMS envelope encryption |
 | Access control | IAM conditional (IP-bound + time-bound + MFA) |
 | Audit trail | CTS (Cloud Trace Service) for every FunctionGraph execution |
-| Data residency | All services in `la-north-2` (Mexico City 2 region) |
+| Data residency | All services in `la-north-2` (Mexico City 2, Huawei Cloud's LATAM region) |
 | Perimeter security | CFW in strict protection mode (not observation) |
 | Document retention | OBS lifecycle policies + DWS archival |
 
