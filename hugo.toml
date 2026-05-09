@@ -1,6 +1,6 @@
-baseURL = "https://bor.re/"
+baseURL = "https://eduardohc.cloud/"
 languageCode = "en-us"
-title = "bor.re"
+title = "Eduardo Hernández"
 theme = "papermod"
 enableRobotsTXT = true
 enableEmoji = true
