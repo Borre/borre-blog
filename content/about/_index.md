@@ -5,7 +5,7 @@ summary: "Cloud-native architecture, enterprise AI at scale, and digital transfo
 lastmod: 2026-05-09
 ---
 
-I'm a results-driven CTO and self-described "food-driven engineer" with 15+ years architecting, scaling, and operationalizing cloud-native ecosystems across Latin America. Currently serving as **Chief Technology Officer for Huawei Cloud in the LATAM region**, overseeing cloud strategy and innovation across 20 countries.
+I'm **Eduardo Hernández Cansino** — a results-driven CTO and self-described "food-driven engineer" with 15+ years architecting, scaling, and operationalizing cloud-native ecosystems across Latin America. Currently serving as **Chief Technology Officer for Huawei Cloud in the LATAM region**, overseeing cloud strategy and innovation across 20 countries.
 
 My focus: bridging enterprise legacy systems with cloud-native architectures, deploying AI at production scale, and building teams that ship.
 

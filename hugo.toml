@@ -1,6 +1,7 @@
 baseURL = "https://eduardohc.cloud/"
 languageCode = "en-us"
-title = "Eduardo Hernández"
+title = "Eduardo Hernández Cansino"
+description = "Wolf pack crossing the river. One cluster at a time."
 theme = "papermod"
 enableRobotsTXT = true
 enableEmoji = true
@@ -57,7 +58,7 @@ summaryLength = 25
     url = "https://x.com/ehdz"
 
   [params.homeInfoParams]
-    Title = "Eduardo Hernández"
+    Title = "Eduardo Hernández Cansino"
     Content = """Engineering manager at **Huawei Cloud LATAM**. Writing about infrastructure, distributed systems, and what it takes to ship production-grade software at scale.
 
 15+ years across software engineering, DevOps, sales engineering, and cloud strategy for Latin America. Self-taught, business-oriented, and I believe architecture conversations are better over good food.
