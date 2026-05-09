@@ -23,7 +23,7 @@ The compliance team reviews contracts, vendor profiles, and transaction anomalie
 
 ## The Full Architecture
 
-The original design connects **10 Huawei Cloud services** into an asynchronous document analysis pipeline:
+The original design connects **9 Huawei Cloud services** into an asynchronous document analysis pipeline:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -76,7 +76,9 @@ The pipeline has **3 distinct processing phases**: OCR → Parse → LLM. Each p
 1. **Event-driven triggers** — An OBS PUT event fires the function. No polling, no EC2 sitting idle.
 2. **Auto-scaling to zero** — Between document uploads, there are zero running instances. For this batch processing pattern (upload 50 contracts once a week), this matters.
 3. **DMS integration** — The function writes results to DMS topics, which downstream consumers (Parse Function, DeepSeek, Dify) subscribe to independently. Each stage scales at its own rate.
-4. **Cold start is irrelevant** — The pipeline processes documents in batches. A 500ms cold start per batch is invisible against 15s of LLM inference.
+4. **Cold start is manageable** — A ~1-3s cold start per function instance is invisible against 15s of LLM inference per document. Python runtimes warm faster; custom runtimes may vary.
+
+> *Note on the diagram above: the "OCR Service" arrow from FunctionGraph represents a **synchronous call** within the same function invocation — not a separate function stage. The "Parse Function" is a second FunctionGraph instance triggered by the DMS topic. This distinction matters for timeout configuration and error handling.*
 
 ### The Trigger Chain
 
@@ -93,13 +95,27 @@ OBS PUT event
                     └─ Embedding → Knowledge Base
 ```
 
-Each DMS topic acts as a buffer — if OCR produces documents faster than DeepSeek can process them, DMS holds the queue. No back-pressure. No dropped documents.
+### Why Kafka (DMS) for 50 Documents/Week?
+
+At first glance, Kafka over DMS seems like overkill for 50 contracts per week — a simple synchronous chain or a lightweight task queue would work. The reasoning was forward-looking:
+
+1. **Pipeline stages have different scaling profiles** — OCR is CPU-bound and fast, LLM inference is I/O-bound and slow. Without a buffer, a slow LLM call blocks OCR processing for subsequent documents. DMS decouples them: OCR writes results and returns immediately; the Parse + LLM stages consume at their own pace.
+
+2. **Audit requirements favor async** — Each DMS message carries metadata (document ID, source system, compliance tier). If a regulator requests "show me every document that moved through the pipeline on May 15," the DMS topic replay provides exactly that. A synchronous chain would require reconstructing the sequence from function logs.
+
+3. **The architecture was designed for growth** — The client's roadmap includes tripling document volume within 18 months. Investing in DMS early avoids a painful migration later.
+
+That said, a simpler alternative exists: FunctionGraph can chain stages via synchronous invocation for <100 docs/week. We chose DMS because the client's compliance team valued the audit trail more than the simplified deployment.
+
+What isn't shown in the diagram: each FunctionGraph invocation wraps its stage in try-catch logic, writing failed documents to a **DMS dead-letter queue** (DLQ) for manual review. CTS captures the error context — function name, document ID, error type, and timestamp. The DLQ is monitored via a Cloud Eye alarm, so the operations team gets notified before the compliance team does.
+
+For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 50 documents per week, manual DLQ review takes minutes — not hours.
 
 ---
 
 ## Financial Compliance: Not Optional
 
-The client operates under CNBV, Banxico, and Ley Fintech regulations. Every architecture decision had compliance implications:
+The client operates under **CNBV** (Mexico's financial regulator), **Banxico** (central bank), and **Ley Fintech** (Fintech Law) — three regulatory frameworks that collectively mandate encryption, auditability, data residency, and strict access control for financial data processing. Every architecture decision had compliance implications:
 
 | Requirement | Implementation |
 |-------------|---------------|
@@ -110,7 +126,7 @@ The client operates under CNBV, Banxico, and Ley Fintech regulations. Every arch
 | Perimeter security | CFW in strict protection mode (not observation) |
 | Document retention | OBS lifecycle policies + DWS archival |
 
-The FunctionGraph execution logs in CTS provide an immutable audit trail — every OCR call, every LLM inference, every document access is logged with timestamp, caller identity, and payload hash. For a regulated financial entity, this alone can replace weeks of manual compliance reporting.
+The FunctionGraph execution logs in CTS provide an immutable audit trail — every function invocation (OCR, parsing, LLM inference) is logged with timestamp, caller identity, and payload hash. Combined with OBS access logging, this gives regulated financial entities a complete, verifiable chain of custody for every document in the pipeline.
 
 ---
 
@@ -157,7 +173,7 @@ cp .env.example .env  # Fill in your credentials
 make demo
 ```
 
-**Requirements:** Huawei Cloud account in `la-north-2`, a MaaS API key, and 15 minutes for `make demo`.
+**Requirements:** Huawei Cloud account in `la-north-2`, a MaaS API key, and 15 minutes for the `make demo` script *after* `terraform apply` finishes provisioning (~5-8 min for the first run; subsequent runs use cached state).
 
 ---
 
