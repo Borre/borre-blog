@@ -1,7 +1,7 @@
 baseURL = "https://eduardohc.cloud/"
 languageCode = "en-us"
 title = "Eduardo Hernández Cansino"
-description = "Wolf pack crossing the river. One cluster at a time."
+description = "Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto."
 theme = "papermod"
 enableRobotsTXT = true
 enableEmoji = true
@@ -59,11 +59,11 @@ summaryLength = 25
 
   [params.homeInfoParams]
     Title = "Eduardo Hernández Cansino"
-    Content = """Engineering manager at **Huawei Cloud LATAM**. Writing about infrastructure, distributed systems, and what it takes to ship production-grade software at scale.
+    Content = """Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto.
 
-15+ years across software engineering, DevOps, sales engineering, and cloud strategy for Latin America. Self-taught, business-oriented, and I believe architecture conversations are better over good food.
+I lead AI and cloud strategy for public sector in Mexico at Huawei Cloud, reporting to the CEO of Huawei Mexico. On the side, I co-founded Nireto, where our product is in pilot.
 
-Currently building cloud infrastructure, AI platforms, and the occasional side project that keeps the craft alive."""
+15+ years across software engineering, DevOps, sales engineering, and cloud strategy. Self-taught, business-oriented, and I believe architecture conversations are better over good food."""
 
   [[params.homeInfoParams.social]]
     name = "GitHub"

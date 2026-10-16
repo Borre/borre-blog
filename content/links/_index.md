@@ -6,7 +6,7 @@ summary: "Follow the work, talks, and collaborations that shape Huawei Cloud LAT
 ## Primary networks
 - 🔗 [LinkedIn](https://mx.linkedin.com/in/ehernandezc)
 - 💻 [GitHub](https://github.com/borre) <!-- TODO: update handle if different -->
-- 🐦 [X/Twitter](https://twitter.com/borre)
+- 🐦 [X/Twitter](https://x.com/ehdz)
 - 📸 [Instagram](https://www.instagram.com/borreg/)
 
 ## Selected talks & resources
