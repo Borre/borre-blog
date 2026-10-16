@@ -1,16 +1,16 @@
 baseURL = "https://eduardohc.cloud/"
 languageCode = "en-us"
 title = "Eduardo Hernández Cansino"
-description = "Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto."
 theme = "papermod"
 enableRobotsTXT = true
 enableEmoji = true
 enableGitInfo = true
-summaryLength = 25
+summaryLength = 30
 
 [pagination]
   pagerSize = 10
 
+# Keep existing URLs: posts live at /:slug/ (e.g. /serverless-enterprise-ai-workshop-functiongraph/)
 [permalinks]
   posts = "/:slug/"
 
@@ -23,13 +23,15 @@ summaryLength = 25
 
 [markup]
   [markup.highlight]
-    style = "monokai"
     noClasses = false
   [markup.goldmark.renderer]
     unsafe = true
 
 [params]
   env = "production"
+  author = "Eduardo Hernández Cansino"
+  description = "Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto."
+  images = ["images/social-card.png"]
   mainSections = ["posts"]
   defaultTheme = "auto"
   disableThemeToggle = false
@@ -38,56 +40,64 @@ summaryLength = 25
   ShowCodeCopyButtons = true
   ShowPostNavLinks = true
   ShowShareButtons = true
-  tocopen = true
+  ShareButtons = ["x", "linkedin"]
+  ShowRssButtonInSectionTermList = true
+  ShowToc = true
+  TocOpen = false
   comments = false
-  DateFormat = "2 Jan 2006"
+  DateFormat = "Jan 2, 2006"
+
+  # Home hero (layouts/home.html)
+  [params.hero]
+    eyebrow = "AI & Cloud Strategy"
+    name = "Eduardo Hernández Cansino"
+    headline = "Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto"
+    intro = "I lead AI & Cloud Strategy for the Public Sector in Mexico at Huawei, reporting to the CEO of Huawei Mexico, and I'm Co-founder & CTO at Nireto, where our product is in pilot. 15 years building software, the last 12 on cloud. Here I write about cloud architecture, enterprise AI, and what it takes to ship."
 
   [params.label]
-    text = "EH"
+    text = "Eduardo HC"
     icon = "/images/favicon.png"
-    iconHeight = 32
+    iconHeight = 28
 
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/borre"
   [[params.socialIcons]]
     name = "linkedin"
-    url = "https://linkedin.com/in/ehernandezc"
+    url = "https://www.linkedin.com/in/ehernandezc/"
   [[params.socialIcons]]
     name = "x"
-    url = "https://x.com/ehdz"
-
-  [params.homeInfoParams]
-    Title = "Eduardo Hernández Cansino"
-    Content = """Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto.
-
-I lead AI and cloud strategy for public sector in Mexico at Huawei Cloud, reporting to the CEO of Huawei Mexico. On the side, I co-founded Nireto, where our product is in pilot.
-
-15+ years across software engineering, DevOps, sales engineering, and cloud strategy. Self-taught, business-oriented, and I believe architecture conversations are better over good food."""
-
-  [[params.homeInfoParams.social]]
-    name = "GitHub"
-    url = "https://github.com/borre"
-  [[params.homeInfoParams.social]]
-    name = "LinkedIn"
-    url = "https://linkedin.com/in/ehernandezc"
+    url = "https://x.com/borre"
+  [[params.socialIcons]]
+    name = "rss"
+    url = "/index.xml"
 
   [params.fuseOpts]
     isCaseSensitive = false
     shouldSort = true
     location = 0
-    distance = 1_200
+    distance = 1_000
     threshold = 0.4
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
 [[menu.main]]
-  identifier = "posts"
-  name = "Posts"
+  name = "Writing"
   url = "/posts/"
   weight = 1
 [[menu.main]]
-  identifier = "about"
+  name = "Tags"
+  url = "/tags/"
+  weight = 2
+[[menu.main]]
   name = "About"
   url = "/about/"
-  weight = 2
+  weight = 3
+[[menu.main]]
+  name = "Now"
+  url = "/now/"
+  weight = 4
+[[menu.main]]
+  name = "Search"
+  url = "/search/"
+  weight = 5

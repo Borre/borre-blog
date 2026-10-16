@@ -9,7 +9,7 @@ lastmod: 2026-10-16
 
 **Work:**
 
-- AI and cloud strategy for the public sector in Mexico at Huawei Cloud, reporting to the CEO of Huawei Mexico.
+- AI and cloud strategy for the public sector in Mexico at Huawei, reporting to the CEO of Huawei Mexico.
 - Co-founder & CTO at Nireto — product in pilot.
 - Previously CTO for Huawei Cloud Latin America.
 
@@ -27,7 +27,7 @@ lastmod: 2026-10-16
 
 **Building:**
 
-- This blog (Hugo + PaperMod, English, git-based, zero JS).
+- This blog (Hugo + PaperMod, English, git-based).
 - Personal homelab (self-hosted AI inference, observability stack).
 - Hermes — an AI agent infrastructure project for force-multiplying technical workflows.
 

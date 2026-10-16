@@ -5,6 +5,7 @@ date: 2026-05-09
 draft: false
 tags: [huawei-cloud, serverless, functiongraph, enterprise-ai, fintech]
 slug: serverless-enterprise-ai-workshop-functiongraph
+featured: true
 ---
 
 In April 2026, we prepared a Technology Innovation Workshop for a **financial services client in Latin America**. The brief: demonstrate how Huawei Cloud could modernize their document-heavy compliance workflows, risk scoring, and regulatory reporting.

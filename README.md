@@ -1,50 +1,25 @@
-# bor.re — Eduardo Hernández Cansino
+# eduardohc.cloud
 
-Sitio personal bilingüe (ES/EN) construido con [Hugo](https://gohugo.io/) y el tema [PaperMod](https://github.com/adityatelange/hugo-PaperMod). Incluye páginas "Semblanza", blog, hub de links y página "Now", más automatizaciones para despliegues en Netlify o GitHub Pages.
+Personal site and blog of Eduardo Hernández Cansino. Hugo (extended **0.150.0**) + PaperMod with a custom design layer, deployed to GitHub Pages on every push to `master` (`.github/workflows/pages.yml`).
 
-## Arranque rápido
-1. Instala Hugo (v0.109+). Comprueba con `hugo version`.
-2. Clona el repositorio e inicializa el submódulo del tema: `git submodule update --init --recursive`.
-3. Corre el servidor de desarrollo: `make dev` o `hugo server -D`.
-4. Construye para producción cuando estés listo: `make build` (usa `HUGO_ENV=production`).
+## Setup
+```bash
+git clone --recurse-submodules git@github.com:Borre/borre-blog.git && cd borre-blog
+hugo server -D          # http://localhost:1313
+```
 
-## Modelo de contenido
-- `content/_index.*.md`: Hero y resumen inicial.
-- `content/about/`: Biografías bilingües con pestañas, métricas y sección de "Speaking & Media".
-- `content/blog/`: Entradas con taxonomías `cloud`, `AI & data`, `DevOps`, `leadership & mentorship`, `homelab`, `food-driven`.
-- `content/links/`: Hub de redes sociales y recursos destacados.
-- `content/now/`: Página "Now" actualizable.
-- Cada archivo `.es.md` / `.en.md` funciona como par lingüístico; usa `lang` en el front matter cuando crees nuevos contenidos.
+## Write a new post (one command)
+```bash
+hugo new content posts/my-post-slug.md     # or: make post slug=my-post-slug
+```
+Edit `content/posts/my-post-slug.md`, set `draft: false`, commit, push to `master` → live at `https://eduardohc.cloud/my-post-slug/` in ~1 minute.
 
-### Crear nuevas entradas bilingües
-Usa `make new-post title="Nombre del post" lang=es|en`. El comando genera el archivo a partir de `archetypes/post.<lang>.md` y aplica slug automático. Repite para cada idioma y conecta las traducciones con el mismo `translationKey` si deseas enlazarlas manualmente.
+Front matter: `title`, `date`, `description` (used for cards + social previews), `tags`, `featured: true` (pins to the home "Featured" row; otherwise the 3 latest show), optional `cover.image`.
 
-## Personalizar la UI
-- Ajusta parámetros globales en `hugo.toml` (`params.homeInfoParams`, menús por idioma, enlaces sociales, modo oscuro, etc.).
-- Estilos adicionales en `assets/css/extended/custom.css` (lengua-tabs, tamaños de botones, etc.).
-- La imagen de portada social y favicons viven en `static/images/`; reemplaza los marcadores `hero-placeholder.jpg` y `social-card.png` cuando tengas arte final.
-
-## Integraciones y analítica
-- Define `params.analytics.googleAnalyticsID` o variables de Plausible antes del despliegue.
-- Actualiza los enlaces de redes si cambian (`LinkedIn`, `GitHub`, `X/Twitter`, `Instagram`).
-- Revisa el `<TODO>` en `hugo.toml` para fijar `baseURL = "https://bor.re"` al publicar.
-
-## Calidad y automatización
-- Ejecuta `pre-commit install` para habilitar los ganchos (`markdownlint`, `cspell` ES/EN, validación de front matter vía Hugo).
-- `Makefile` expone `make dev`, `make serve`, `make build`, `make new-post` y `make clean`.
-- GitHub Actions (`.github/workflows/`) compila el sitio y puede publicar en GitHub Pages.
-
-## Despliegue
-### Netlify
-- Usa el `netlify.toml` incluido (`build = "hugo --gc --minify"`, `publish = "public"`).
-- Configura la variable `HUGO_VERSION` con la versión LTS más reciente y actualiza el dominio `bor.re` en el panel de Netlify.
-
-### GitHub Pages
-- El workflow `hugo-gh-pages.yml` construye el sitio y publica en la rama `gh-pages` usando GitHub Actions.
-- Crea un token con permisos de `pages:write` si es necesario y habilita Pages desde la rama `gh-pages` en el repositorio.
-- Se incluye `static/CNAME` con `bor.re` para los despliegues en Pages.
-
-## TODOs antes de producción
-- Sustituir imagen y favicon por la fotografía oficial.
-- Ajustar identificadores reales de analítica (Google/Plausible).
-- Confirmar usuarios definitivos de GitHub y X/Twitter si difieren de los placeholders.
+## Structure
+- `layouts/home.html` — home page (hero, featured, latest, topics). Hero text lives in `hugo.toml` → `[params.hero]`.
+- `assets/css/extended/site.css` — all styling (light/dark tokens at the top).
+- `layouts/_partials/extend_head.html` — fonts, social meta, Person JSON-LD.
+- `content/about`, `content/now`, `content/links` — pages. `static/CNAME` = `eduardohc.cloud`.
+- Permalinks are `/:slug/`; don't change them or old links break.
+- RSS: `/index.xml` (also per tag: `/tags/<tag>/index.xml`).

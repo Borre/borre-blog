@@ -1,0 +1,69 @@
+{{- define "main" }}
+{{- $h := site.Params.hero }}
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <p class="hero-eyebrow"><span class="dot"></span>{{ $h.eyebrow }}</p>
+  <h1 class="hero-name">{{ $h.name }}</h1>
+  <ul class="hero-headline" aria-label="Headline">
+    {{- range split $h.headline " | " }}<li>{{ . }}</li>{{ end }}
+  </ul>
+  <p class="hero-intro">{{ $h.intro }}</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ "posts/" | relURL }}">Read the blog <span aria-hidden="true">→</span></a>
+    <a class="btn btn-ghost" href="{{ "about/" | relURL }}">About me</a>
+    <span class="hero-social">{{ partial "social_icons.html" (dict "align" "left") }}</span>
+  </div>
+</section>
+
+{{- $posts := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $featured := where $posts "Params.featured" true }}
+{{- if not $featured }}{{ $featured = first 3 $posts }}{{ else }}{{ $featured = first 3 $featured }}{{ end }}
+
+{{- with $featured }}
+<section class="home-section">
+  <div class="section-head"><h2>Featured</h2></div>
+  <div class="featured-grid">
+    {{- range . }}
+    <a class="featured-card" href="{{ .Permalink }}">
+      <div class="fc-meta">{{ .Date.Format site.Params.DateFormat }} · {{ .ReadingTime }} min read</div>
+      <h3>{{ .Title }}</h3>
+      <p>{{ .Description | default (.Summary | plainify) | truncate 180 }}</p>
+      {{- with .Params.tags }}<div class="tag-row">{{ range first 4 . }}<span class="tag">#{{ . }}</span>{{ end }}</div>{{ end }}
+    </a>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
+
+<section class="home-section">
+  <div class="section-head">
+    <h2>Latest writing</h2>
+    <a class="section-link" href="{{ "index.xml" | relURL }}">RSS</a>
+  </div>
+  {{- if $posts }}
+  <ul class="post-list">
+    {{- range first 8 $posts }}
+    <li>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2006" }}</time>
+      <div>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+        {{- with .Params.tags }}<div class="tag-row">{{ range first 4 . }}<a class="tag" href="{{ (printf "tags/%s/" (urlize .)) | relURL }}">#{{ . }}</a>{{ end }}</div>{{ end }}
+      </div>
+    </li>
+    {{- end }}
+  </ul>
+  <a class="section-link more" href="{{ "posts/" | relURL }}">All posts →</a>
+  {{- else }}
+  <p class="muted">First posts coming soon.</p>
+  {{- end }}
+</section>
+
+{{- with site.Taxonomies.tags }}
+<section class="home-section">
+  <div class="section-head"><h2>Topics</h2></div>
+  <div class="tag-cloud">
+    {{- range .ByCount }}<a class="tag" href="{{ .Page.RelPermalink }}">#{{ .Page.Title | lower }} <sup>{{ .Count }}</sup></a>{{ end }}
+  </div>
+</section>
+{{- end }}
+{{- end }}

@@ -1,0 +1,28 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<meta name="twitter:site" content="@borre">
+<meta name="twitter:creator" content="@borre">
+{{- if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Eduardo Hernández Cansino",
+  "url": {{ site.BaseURL }},
+  "jobTitle": "AI & Cloud Strategy Lead, Public Sector Mexico",
+  "worksFor": [
+    {"@type": "Organization", "name": "Huawei"},
+    {"@type": "Organization", "name": "Nireto"}
+  ],
+  "description": {{ site.Params.description }},
+  "sameAs": [
+    "https://github.com/borre",
+    "https://x.com/borre",
+    "https://www.linkedin.com/in/ehernandezc/"
+  ]
+}
+</script>
+{{- end }}
