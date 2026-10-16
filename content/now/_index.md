@@ -1,39 +1,29 @@
 ---
 title: "Now"
-description: "What currently shapes Eduardo's priorities."
-summary: "Active initiatives, speaking, reading, and building."
-lastmod: 2026-05-09
+description: "What Eduardo Hernández Cansino is focused on right now."
+summary: "Current work, writing, learning, and building."
+lastmod: 2026-10-16
 ---
 
-**This is a [now page](https://nownownow.com/about). Last updated May 2026.**
+**This is a [now page](https://nownownow.com/about). Last updated October 2026.**
 
-**Work:**
+**Work**
 
-- Leading Huawei Cloud LATAM strategy across 20 countries — focused on AI-driven transformation, SAP modernization, and cloud migration for enterprise and government clients.
-- Scaling Pangu model adoption in manufacturing (predictive maintenance), financial services (mainframe liberation), and retail (e-commerce platforms).
-- Driving the 5 strategic pillars from our America Digital Congress 2025 keynote: AI, SAP HANA, big data, cloud migration, and mainframe modernization.
-- Growing a distributed team of 80+ engineers and architects across the region.
+- AI & Cloud Strategy Lead, Public Sector Mexico, at Huawei. I report to the CEO of Huawei Mexico and work on cloud and AI adoption and digital sovereignty for public institutions.
+- Co-founder & CTO at [Nireto](https://nireto.app): AI agents for short-term rental hosts and property managers, through our own app and WhatsApp. We're in pilot, and I lead engineering (Go + Postgres multi-tenant backend, infrastructure, and the controls that keep operators in charge of money and door access).
 
-**Writing & speaking:**
+**Writing**
 
-- Launched this blog as a home for long-form technical content on cloud architecture, AI/ML, and what it takes to ship at scale in LATAM.
-- Recent keynote at America Digital Congress Mexico 2025 (June 18-19, WTC Mexico City).
-- Next speaking engagements being confirmed for H2 2026.
-- Planning the first batch of blog posts — cloud-native patterns, AI at the edge, and lessons from multi-cloud migrations.
+- Starting a regular cadence of articles here. Topics: AI agents that act on real operations, multi-tenant architecture, public-sector cloud adoption, and lessons from modernizing large enterprise systems.
 
-**Learning:**
+**Learning**
 
-- Deepening on AI inference at the edge and small language models for enterprise use cases.
-- Exploring LoRaWAN and Meshtastic as side projects (retro hardware meets modern networking).
-- Picking at kubernetes scheduling optimizations for GPU workloads.
+- AI inference at the edge and small language models for enterprise use cases.
+- Kubernetes scheduling for GPU workloads.
 
-**Building:**
+**Building**
 
-- This blog (Hugo + PaperMod, English, git-based, zero JS).
-- Personal homelab (Kubernetes, self-hosted AI inference, observability stack).
-- Hermes — an AI agent infrastructure project for force-multiplying technical workflows.
+- This site (Hugo + PaperMod, plain git).
+- A personal homelab: self-hosted AI inference and an observability stack.
 
-**Life:**
-
-- Based in Mexico City with my wife Cecilia and 3-year-old daughter Ana.
-- Still searching for the best steak in CDMX (recommendations open).
+Based in Mexico City.
