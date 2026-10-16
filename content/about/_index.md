@@ -36,6 +36,7 @@ Full history and details: [LinkedIn](https://www.linkedin.com/in/ehernandezc/).
 - **2022** · Speaker, "Unleashing Data Value with Full-Lifecycle Data Intelligence", Huawei Cloud LATAM Summit. [Agenda](https://www.huaweicloud.com/intl/en-us/about/minisite/hcls.html)
 
 **Certification:** HCIE-Cloud Service Architect
+
 **Education:** Universidad Nacional Autónoma de México (UNAM)
 
 ## Get in touch
