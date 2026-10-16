@@ -52,7 +52,7 @@ summaryLength = 30
     eyebrow = "AI & Cloud Strategy"
     name = "Eduardo Hernández Cansino"
     headline = "Technology Executive | AI & Cloud Strategy | Former CTO, Huawei Cloud Latin America | Co-founder & CTO at Nireto"
-    intro = "I lead AI & Cloud Strategy for the Public Sector in Mexico at Huawei, reporting to the CEO of Huawei Mexico, and I'm Co-founder & CTO at Nireto, where our product is in pilot. 15 years building software, the last 12 on cloud. Here I write about cloud architecture, enterprise AI, and what it takes to ship."
+    intro = "I solve business problems with technology. I lead AI & Cloud Strategy for the Public Sector in Mexico at Huawei, and I'm Co-founder & CTO of Nireto, where we're building AI agents for short-term rental hosts and property managers (currently in pilot). Before that I was CTO of Huawei Cloud Latin America. I've been building software for 15+ years. Here I write about cloud, enterprise AI, and building systems people can trust with real operations."
 
   [params.label]
     text = "Eduardo HC"

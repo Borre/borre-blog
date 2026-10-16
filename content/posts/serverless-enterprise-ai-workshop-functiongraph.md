@@ -1,6 +1,6 @@
 ---
 title: "Building a Multi-Service Enterprise AI Workshop on Huawei Cloud: A Serverless FunctionGraph Architecture"
-description: "How we designed a serverless document analysis pipeline connecting OBS, DMS, FunctionGraph, OCR, DeepSeek, Dify, and DWS for a financial services client processing 45,000+ invoices per month."
+description: "How we designed a serverless document-AI pipeline on Huawei Cloud (FunctionGraph, DMS, OCR, DeepSeek, Dify, DWS) for regulated financial workflows, and what we cut for the demo."
 date: 2026-05-09
 draft: false
 tags: [huawei-cloud, serverless, functiongraph, enterprise-ai, fintech]
@@ -8,7 +8,7 @@ slug: serverless-enterprise-ai-workshop-functiongraph
 featured: true
 ---
 
-In April 2026, we prepared a Technology Innovation Workshop for a **financial services client in Latin America**. The brief: demonstrate how Huawei Cloud could modernize their document-heavy compliance workflows, risk scoring, and regulatory reporting.
+In April 2026, we prepared a Technology Innovation Workshop on **document-heavy compliance workflows in financial services**, delivered in Mexico City in May. The brief: show how Huawei Cloud could modernize compliance review, risk scoring, and regulatory reporting.
 
 The architecture we designed goes well beyond what we ended up demoing in the room. This post covers the full design — the serverless **invoice and contract analysis pipeline** with **FunctionGraph**, **DMS/Kafka**, **OCR Service**, **DeepSeek**, and **Dify** — plus why we simplified it for a 45-minute workshop.
 
@@ -16,15 +16,17 @@ The architecture we designed goes well beyond what we ended up demoing in the ro
 
 ## The Problem
 
-The compliance team reviews **invoices, vendor profiles, and transaction anomalies** across thousands of entities. The manual process involved:
+Compliance teams in financial services review **invoices, vendor profiles, and transaction anomalies** across thousands of entities, and much of that work is still manual:
 
-- **45,000+ invoices per month** — each requiring OCR extraction, validation against ERP, and compliance scoring
-- **~3 days** for a single vendor on-boarding (document review → OCR extraction → legal validation → ERP update)
-- **No unified view**: PDF silos across 3 business units, vendor data in ERP, credit bureau data in separate systems
+- **Document review is slow**: OCR or retyping, validation against the ERP, legal review, then an ERP update, all for every document
+- **Vendor onboarding takes days**, because each step waits on the previous one
+- **No unified view**: PDFs in silos, vendor data in the ERP, credit-bureau data in separate systems
+
+To size the design, we assumed **45,000 invoices per month (about 1,500 a day)**, each needing OCR extraction, validation against the ERP, and a compliance score. That is a sizing assumption, not a measured figure. The scaling math below uses it.
 
 ## The Full Architecture
 
-The original design connects **9 Huawei Cloud services** into an asynchronous document analysis pipeline:
+The original design connects **nine components, almost all managed Huawei Cloud services**, into an asynchronous document-analysis pipeline:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -74,8 +76,8 @@ The pipeline has **3 distinct processing phases**: OCR → Parse → LLM. Each p
 
 **FunctionGraph** is the natural choice because:
 
-1. **Event-driven triggers** — An OBS PUT event fires the function. No polling, no EC2 sitting idle.
-2. **Auto-scaling to zero** — Between batch uploads, there are zero running instances. At 45,000 invoices per month (~1,500/day), the pipeline scales up during business hours, processes the batch, and releases resources.
+1. **Event-driven triggers** — An OBS PUT event fires the function. No polling, no VM sitting idle.
+2. **Auto-scaling to zero** — Between batch uploads, there are zero running instances. At the volume we sized for (~1,500 invoices/day), the pipeline scales up during business hours, processes the batch, and releases resources.
 3. **DMS integration** — The function writes results to DMS topics, which downstream consumers (Parse Function, DeepSeek, Dify) subscribe to independently. Each stage scales at its own rate.
 4. **Cold start is manageable** — A ~1-3s cold start per function instance is invisible against 15s of LLM inference per document. Python runtimes warm faster; custom runtimes may vary.
 
@@ -96,13 +98,13 @@ OBS PUT event
                     └─ Embedding → Knowledge Base
 ```
 
-### Why DMS (Kafka) at 45,000 Invoices/Month
+### Why DMS (Kafka) at This Volume
 
 At this scale, an async event bus isn't optional — it's structural. Here's why:
 
 1. **Pipeline stages have different scaling profiles** — OCR is CPU-bound and processes ~1 page/second per instance. LLM inference is I/O-bound and takes 3-15s per document. Without a buffer, a slow LLM call blocks OCR for subsequent invoices. DMS decouples them: the OCR stage writes results and returns immediately; downstream consumers (Parse + LLM) process at their own rate.
 
-2. **Burst absorption** — Invoices arrive in waves (end-of-month peaks, supplier onboarding batches). DMS queues up to 72 hours of backlog, so a 2x or 3x burst in document volume doesn't require over-provisioning compute.
+2. **Burst absorption** — Invoices arrive in waves (end-of-month peaks, supplier onboarding batches). DMS retains a backlog (72 hours in this design), so a 2x or 3x burst in document volume doesn't require over-provisioning compute.
 
 3. **Audit requirements favor async** — Each DMS message carries metadata (document ID, source system, compliance tier). Topic replay provides a verifiable sequence of every document processed on any given day — a synchronous chain would require reconstructing from overlapping function logs.
 
@@ -112,15 +114,15 @@ At this scale, an async event bus isn't optional — it's structural. Here's why
 
 Each FunctionGraph invocation wraps its stage in try-catch logic. Failed documents land in a **DMS dead-letter queue** (DLQ) — not for manual review, but for a dedicated FunctionGraph **reprocessor** that retries with escalating backoff (1 min → 5 min → 30 min → escalate to Cloud Eye alarm). This makes three FunctionGraph instances in total: preprocess (OCR), parse (normalization), and reprocessor (DLQ handler). CTS captures the error context — function name, document ID, error type, and timestamp — so the ops team has a complete incident trail.
 
-For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 45,000 invoices/month, with a ~1% transient failure rate, that's ~450 automatic retries per month — all handled without human intervention.
+For the OCR stage specifically, transient failures (timeouts, throttling) trigger up to 3 automatic retries with exponential backoff before the document lands in the DLQ. At 45,000 invoices/month and an assumed ~1% transient failure rate, that's ~450 automatic retries per month, all handled without human intervention.
 
-A separate concern: what about OCR passes with **low confidence** (<80%)? These are routed to a dedicated DMS topic (`ocr.low_confidence`) that feeds a lightweight manual review queue — displayed in a simple Streamlit dashboard for a compliance analyst to verify. At typical OCR quality levels for structured invoices (90-95% confidence on clean PDFs), this represents 2,000-4,500 documents per month requiring human review, a dramatically better ratio than the current all-manual process.
+A separate concern: what about OCR passes with **low confidence** (<80%)? These are routed to a dedicated DMS topic (`ocr.low_confidence`) that feeds a lightweight manual review queue — displayed in a simple Streamlit dashboard for a compliance analyst to verify. If 90–95% of clean, structured invoices clear the threshold, that leaves roughly 2,250–4,500 documents per month for human review, far fewer than an all-manual process.
 
 ---
 
 ## Financial Compliance: Not Optional
 
-The client operates under **CNBV** (Mexico's financial regulator), **Banxico** (central bank), and **Ley Fintech** (Fintech Law) — three regulatory frameworks that collectively mandate encryption, auditability, data residency, and strict access control for financial data processing. Every architecture decision had compliance implications:
+Financial institutions in Mexico work under **Mexican financial regulation** that expects encryption, auditability, data residency, and strict access control for financial data. We treated those expectations as design inputs, so every architecture decision had compliance implications:
 
 | Requirement | Implementation |
 |-------------|---------------|
@@ -154,32 +156,23 @@ The workshop audience (C-suite, not engineers) needed to *touch and feel* the ch
 ## Lessons Learned
 
 ### 1. FunctionGraph + DMS shines at invoice-processing scale
-For this use case (45,000 invoices per month ≈ 1,500/day), the serverless async pipeline is a strong fit. Each component scales independently, and the infrastructure cost between batch windows is effectively zero for Python runtimes on FunctionGraph's pay-per-use model.
+At the volume we sized for (~1,500 invoices/day), the serverless async pipeline is a strong fit. Each component scales independently, and the infrastructure cost between batch windows is effectively zero for Python runtimes on FunctionGraph's pay-per-use model.
 
 ### 2. Workshop demos ≠ production architecture
-The full FunctionGraph pipeline is what you'd deploy in production. The workshop demo is what fits in 8 minutes. Design both, but be honest about the gap.
+The full FunctionGraph pipeline is what you'd deploy in production. The workshop demo is what fits in one segment of a 45-minute session. Design both, but be honest about the gap.
 
 ### 3. Dify as the user-facing layer simplifies everything
 Dify's RAG + chatbot interface means non-technical users interact with the system through natural language. The complexity of FunctionGraph + DMS + OCR is hidden behind a single chat interface. This is the right abstraction for enterprise AI.
 
 ### 4. Compliance constraints drove better architecture
-If IAM conditional, KMS, and CTS hadn't been mandatory (CNBV), we might have cut corners. The regulation forced us into a design that is more auditable, more secure, and ultimately more sellable to financial enterprises.
+If conditional IAM, KMS, and CTS hadn't been requirements for regulated financial workloads, we might have cut corners. The constraints pushed us to a design that is more auditable, more secure, and easier for a financial institution to approve.
 
 ---
 
-## Try It Yourself
+## Reusing the Design
 
-The Terraform modules, synthetic data generators, and Dify configurations are open-source:
-
-```
-git clone https://github.com/Borre/serverless-doc-ai-pipeline.git
-cd serverless-doc-ai-pipeline
-cp .env.example .env  # Fill in your credentials
-make demo
-```
-
-**Requirements:** Huawei Cloud account in `la-north-2`, a MaaS API key, and 15 minutes for the `make demo` script *after* `terraform apply` finishes provisioning (~5-8 min for the first run; subsequent runs use cached state).
+The pattern is portable: object-storage events trigger a serverless function, an event bus sits between OCR, parsing, and LLM stages, low-confidence results go to a human review queue, and every step lands in an audit log. All of it was built with Terraform and synthetic data only. No real customer documents were involved.
 
 ---
 
-*Originally designed for a Technology Innovation Workshop with a financial services client, Mexico City, May 2026. The full FunctionGraph pipeline is available as a reference architecture for financial services clients.*
+*Designed in April 2026 for a Technology Innovation Workshop in Mexico City (May 2026). The full FunctionGraph pipeline serves as a reference architecture for regulated document workflows.*
