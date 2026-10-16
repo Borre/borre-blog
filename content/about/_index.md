@@ -26,7 +26,7 @@ Full history and details: [LinkedIn](https://www.linkedin.com/in/ehernandezc/).
 ## Speaking & media
 
 - **May 2026** · Moderator, banking modernization panel at the launch of Huawei Cloud's Dedicated Financial Zone, Mexico City. [Huawei MX](https://www.huawei.com/mx/news/2026/huawei-cloud-nueva-zona-financiera-dedicada)
-- **Sep 2025** · Talk "Innovation to Forge a Secure AI-Native Huawei Cloud", 2º Foro Nacional de Ciberseguridad AMCS, Universidad Panamericana. [LinkedIn](https://es.linkedin.com/posts/ehernandezc_huaweicloud-forociberseguridad2025-ainative-activity-7376664582100099072-T2pG)
+- **Sep 2025** · Talk "Innovation to Forge a Secure AI-Native Huawei Cloud", 2º Foro Nacional de Ciberseguridad AMCS. [LinkedIn](https://es.linkedin.com/posts/ehernandezc_huaweicloud-forociberseguridad2025-ainative-activity-7376664582100099072-T2pG)
 - **Jun 2025** · Keynote "Accelerate Innovation, Ahead in Time with Huawei Cloud", America Digital Congress Mexico, WTC CDMX. [America Digital](https://mx.america-digital.com/top-moments-10th-america-digital-congress-mexico-2025/?lang=en) · [feature](https://mx.america-digital.com/revolucion-cloud-native-el-plan-de-huawei-cloud-para-acelerar-la-innovacion-en-latinoamerica/)
 - **Nov 2024** · Two sessions at Huawei Cloud Summit Chile: "Cloud for Good" and "Huawei Cloud Big Data". [Agenda](https://www.huaweicloud.com/intl/en-us/about/minisite/summit-chile-2024.html)
 - **Sep 2024** · Panelist, "AI & Innovative Applications", Huawei Seeds for the Future / Tech4Good LATAM, San Salvador. [LinkedIn](https://es.linkedin.com/posts/isis-hauck-comodo_sftf-huawei-seedsforthefuture-activity-7236393755375788033-_zVP)
@@ -37,7 +37,6 @@ Full history and details: [LinkedIn](https://www.linkedin.com/in/ehernandezc/).
 
 **Certification:** HCIE-Cloud Service Solutions Architect
 
-**Education:** Universidad Nacional Autónoma de México (UNAM)
 
 ## Get in touch
 
