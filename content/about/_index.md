@@ -10,7 +10,7 @@ I'm **Eduardo Hernández Cansino**, and I solve business problems with technolog
 ## Now
 
 - **AI & Cloud Strategy Lead, Public Sector Mexico, Huawei** (2026–present). I report directly to the CEO of Huawei Mexico. I coordinate technical and commercial resources to help public institutions adopt cloud and AI, with a focus on technology adoption and digital sovereignty.
-- **Co-founder & CTO, Nireto** (since August 2026). Nireto builds AI agents for short-term rental hosts and property managers, through its own app and WhatsApp. The product is in pilot and under active development. I lead engineering: a multi-tenant backend in Go and Postgres, the infrastructure it runs on, and the controls that keep operators in charge of any decision involving money or door access.
+- **Co-founder & CTO, [Nireto](https://nireto.app)** (since August 2026). Nireto builds AI agents for short-term rental hosts and property managers, through its own app and WhatsApp. The product is in pilot and under active development. I lead engineering: a multi-tenant backend in Go and Postgres, the infrastructure it runs on, and the controls that keep operators in charge of any decision involving money or door access.
 
 ## Before
 
@@ -25,7 +25,7 @@ Full history and details: [LinkedIn](https://www.linkedin.com/in/ehernandezc/).
 
 ## Speaking & media
 
-- **May 2026** · Moderator, banking modernization panel with Fincomún and Grupo HIR at the launch of Huawei Cloud's Dedicated Financial Zone, Mexico City. [Huawei MX](https://www.huawei.com/mx/news/2026/huawei-cloud-nueva-zona-financiera-dedicada)
+- **May 2026** · Moderator, banking modernization panel at the launch of Huawei Cloud's Dedicated Financial Zone, Mexico City. [Huawei MX](https://www.huawei.com/mx/news/2026/huawei-cloud-nueva-zona-financiera-dedicada)
 - **Sep 2025** · Talk "Innovation to Forge a Secure AI-Native Huawei Cloud", 2º Foro Nacional de Ciberseguridad AMCS, Universidad Panamericana. [LinkedIn](https://es.linkedin.com/posts/ehernandezc_huaweicloud-forociberseguridad2025-ainative-activity-7376664582100099072-T2pG)
 - **Jun 2025** · Keynote "Accelerate Innovation, Ahead in Time with Huawei Cloud", America Digital Congress Mexico, WTC CDMX. [America Digital](https://mx.america-digital.com/top-moments-10th-america-digital-congress-mexico-2025/?lang=en) · [feature](https://mx.america-digital.com/revolucion-cloud-native-el-plan-de-huawei-cloud-para-acelerar-la-innovacion-en-latinoamerica/)
 - **Nov 2024** · Two sessions at Huawei Cloud Summit Chile: "Cloud for Good" and "Huawei Cloud Big Data". [Agenda](https://www.huaweicloud.com/intl/en-us/about/minisite/summit-chile-2024.html)
@@ -35,7 +35,7 @@ Full history and details: [LinkedIn](https://www.linkedin.com/in/ehernandezc/).
 - **Nov 2023** · Speaker, Huawei Cloud Summit Chile, Santiago. [Huawei Cloud](https://www.huaweicloud.com/intl/en-us/news/20231201092144825.html) · [华为云](https://www.huaweicloud.com/news/2023/20231201083201211.html) · [Data Centre Magazine, 3 Dec 2023](https://datacentremagazine.com/technology-and-ai/chiles-digital-transformation-driven-by-huawei-cloud) · [DPL News](https://dplnews.com/chile-huawei-cloud-summit-62-de-empresas-en-latam-invirtieron-hasta-25-de-su-presupuesto-en-servicios-de-nube-publica-en-2022/)
 - **2022** · Speaker, "Unleashing Data Value with Full-Lifecycle Data Intelligence", Huawei Cloud LATAM Summit. [Agenda](https://www.huaweicloud.com/intl/en-us/about/minisite/hcls.html)
 
-**Certification:** HCIE-Cloud Service Architect
+**Certification:** HCIE-Cloud Service Solutions Architect
 
 **Education:** Universidad Nacional Autónoma de México (UNAM)
 

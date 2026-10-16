@@ -10,7 +10,7 @@ lastmod: 2026-10-16
 **Work**
 
 - AI & Cloud Strategy Lead, Public Sector Mexico, at Huawei. I report to the CEO of Huawei Mexico and work on cloud and AI adoption and digital sovereignty for public institutions.
-- Co-founder & CTO at Nireto: AI agents for short-term rental hosts and property managers, through our own app and WhatsApp. We're in pilot, and I lead engineering (Go + Postgres multi-tenant backend, infrastructure, and the controls that keep operators in charge of money and door access).
+- Co-founder & CTO at [Nireto](https://nireto.app): AI agents for short-term rental hosts and property managers, through our own app and WhatsApp. We're in pilot, and I lead engineering (Go + Postgres multi-tenant backend, infrastructure, and the controls that keep operators in charge of money and door access).
 
 **Writing**
 

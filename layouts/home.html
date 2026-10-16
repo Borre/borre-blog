@@ -7,7 +7,7 @@
   <ul class="hero-headline" aria-label="Headline">
     {{- range split $h.headline " | " }}<li>{{ . }}</li>{{ end }}
   </ul>
-  <p class="hero-intro">{{ $h.intro }}</p>
+  <p class="hero-intro">{{ $h.intro | markdownify }}</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="{{ "posts/" | relURL }}">Read the blog <span aria-hidden="true">→</span></a>
     <a class="btn btn-ghost" href="{{ "about/" | relURL }}">About me</a>

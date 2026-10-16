@@ -115,3 +115,4 @@ a { text-underline-offset: 3px; }
   .hero-glow { width: 320px; height: 320px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.hero-intro a{color:var(--accent);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent)}

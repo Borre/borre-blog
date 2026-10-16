@@ -11,9 +11,13 @@ summary: "Profiles, code, and public talks."
 - [X](https://x.com/borre)
 - [RSS feed](/index.xml)
 
+**Work**
+
+- [Nireto](https://nireto.app): AI agents for short-term rental hosts and property managers (in pilot)
+
 **Speaking & media**
 
-- **May 2026** · Moderator, banking modernization panel with Fincomún and Grupo HIR at the launch of Huawei Cloud's Dedicated Financial Zone, Mexico City. [Huawei MX](https://www.huawei.com/mx/news/2026/huawei-cloud-nueva-zona-financiera-dedicada)
+- **May 2026** · Moderator, banking modernization panel at the launch of Huawei Cloud's Dedicated Financial Zone, Mexico City. [Huawei MX](https://www.huawei.com/mx/news/2026/huawei-cloud-nueva-zona-financiera-dedicada)
 - **Sep 2025** · Talk "Innovation to Forge a Secure AI-Native Huawei Cloud", 2º Foro Nacional de Ciberseguridad AMCS, Universidad Panamericana. [LinkedIn](https://es.linkedin.com/posts/ehernandezc_huaweicloud-forociberseguridad2025-ainative-activity-7376664582100099072-T2pG)
 - **Jun 2025** · Keynote "Accelerate Innovation, Ahead in Time with Huawei Cloud", America Digital Congress Mexico, WTC CDMX. [America Digital](https://mx.america-digital.com/top-moments-10th-america-digital-congress-mexico-2025/?lang=en) · [feature](https://mx.america-digital.com/revolucion-cloud-native-el-plan-de-huawei-cloud-para-acelerar-la-innovacion-en-latinoamerica/)
 - **Nov 2024** · Two sessions at Huawei Cloud Summit Chile: "Cloud for Good" and "Huawei Cloud Big Data". [Agenda](https://www.huaweicloud.com/intl/en-us/about/minisite/summit-chile-2024.html)
