@@ -8,7 +8,7 @@ summary: "Profiles, code, and public talks."
 
 - [LinkedIn](https://www.linkedin.com/in/ehernandezc/): full career history
 - [GitHub](https://github.com/borre)
-- [X](https://x.com/borre)
+- [X (@borre)](https://x.com/borre)
 - [RSS feed](/index.xml)
 
 **Work**
